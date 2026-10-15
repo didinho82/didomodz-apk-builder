@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d0a"><title>DIDOMODZ APK BUILDER</title><link rel="stylesheet" href="style.css">
+</head>
+<body><main class="app">
+<header><div class="logo">D<span>M</span></div><div><p class="eyebrow">ANDROID WEB APP STUDIO</p><h1>DIDOMODZ <span>APK BUILDER</span></h1></div></header>
+<section class="hero"><div class="pill"><i></i> APK PERSONALIZADO VIA GITHUB ACTIONS</div><h2>Seu site.<br><span>Seu aplicativo.</span></h2><p>Configure o nome e o site. Depois use os mesmos dados no workflow do GitHub para compilar o APK.</p></section>
+<form id="builderForm" class="panel">
+<label for="appName">Nome do aplicativo</label><input id="appName" maxlength="40" placeholder="Meu Aplicativo" required>
+<label for="siteUrl">Endereço do site</label><input id="siteUrl" type="url" placeholder="https://seusite.com" required><small>Use HTTPS e um site que você tem autorização para empacotar.</small>
+<button type="submit">Preparar configuração <b>→</b></button>
+<p class="hint">Este painel não dispara o build sozinho. Para gerar o APK, abra GitHub → Actions → Build Personalized APK → Run workflow.</p>
+</form>
+<section id="result" class="result" hidden aria-live="polite"><h3>Configuração pronta</h3><p>Copie os valores abaixo para o formulário do GitHub Actions.</p><dl><div><dt>Nome</dt><dd id="outName"></dd></div><div><dt>URL</dt><dd id="outUrl"></dd></div></dl><button id="copyConfig" class="secondary" type="button">Copiar configuração</button><p id="copyStatus" class="hint"></p></section>
+<footer>© DIDOMODZ · Versão inicial</footer></main><script src="app.js"></script></body></html>
