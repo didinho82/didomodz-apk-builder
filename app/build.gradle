@@ -1,12 +1,43 @@
-plugins { id 'com.android.application' }
+plugins {
+    id 'com.android.application'
+}
+
+import groovy.json.JsonSlurper
+
+def cfgFile = rootProject.file('build-config.json')
+def cfg = cfgFile.exists() ? new JsonSlurper().parse(cfgFile) : [:]
+def appId = (project.findProperty('appPackage') ?: cfg.package_name ?: 'com.didomodz.apkbuilder').toString()
+def themeColor = (cfg.theme_color ?: '#080D0A').toString()
+if (!(themeColor ==~ /#[0-9A-Fa-f]{6}/)) themeColor = '#080D0A'
+def textZoom = ((cfg.text_zoom ?: 100) as Integer)
+textZoom = Math.max(50, Math.min(200, textZoom))
+def esc = { s -> '"' + s.replace('\\', '\\\\').replace('"', '\\"') + '"' }
+
+def iconFile = rootProject.file('build-icon.png')
+def resDir = 'src/main/res-default'
+if (iconFile.exists()) {
+    def out = file("$buildDir/generated/custom-res")
+    ['mipmap'].each { d -> new File(out, d).mkdirs(); new File(out, "$d/ic_launcher.png").bytes = iconFile.bytes }
+    resDir = out.path
+}
+
 android {
     namespace 'com.didomodz.apkbuilder'
     compileSdk 35
+
     defaultConfig {
-        applicationId 'com.didomodz.apkbuilder'
+        applicationId appId
         minSdk 23
         targetSdk 35
         versionCode 1
         versionName '1.0'
+        buildConfigField 'String', 'THEME_COLOR', esc(themeColor)
+        buildConfigField 'int', 'TEXT_ZOOM', textZoom.toString()
+    }
+
+    sourceSets { main { res.srcDirs = [resDir] } }
+
+    buildFeatures {
+        buildConfig true
     }
 }
